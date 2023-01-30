@@ -17,3 +17,6 @@ def Register(request):
         user_token = Token.objects.get(user_id=user.id)
         return  Response({"access_token":f"{user_token}"},status=status.HTTP_201_CREATED)
 
+@api_view(["POST","GET"])
+def home(request):
+    return Response({'test':"test1"})
