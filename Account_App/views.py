@@ -12,11 +12,11 @@ from rest_framework.authentication import TokenAuthentication
 def Register(request):
     if request.method == "POST":
         data = request.data
-        user = User.objects.create_user(username=data.get("userName"),password=data.get("password"))
-        add_token = Token.objects.get_or_create(user_id=user.id)
-        user_token = Token.objects.get(user_id=user.id)
-        return  Response({"access_token":f"{user_token}"},status=status.HTTP_201_CREATED)
-
-@api_view(["POST","GET"])
-def home(request):
-    return Response({'test':"test1"})
+        try:#If the username already exists, except is executed
+            User.objects.get(username=data.get("phoneNumber"))
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+        except:#If the username already exists, except is executed
+            user = User.objects.create_user(username=data.get("phoneNumber"),first_name=data.get("firstName"),last_name=data.get("lastName"),password=data.get("password"))
+            add_token = Token.objects.get_or_create(user_id=user.id)
+            user_token = Token.objects.get(user_id=user.id)
+            return  Response({"access_token":f"{user_token}"},status=status.HTTP_201_CREATED)
