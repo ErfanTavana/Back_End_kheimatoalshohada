@@ -14,7 +14,7 @@ def Register(request):
         data = request.data
         try:#If the username already exists, except is executed
             User.objects.get(username=data.get("phoneNumber"))
-            return Response(status=status.HTTP_400_BAD_REQUEST)
+            return Response(status=status.HTTP_200_OK)
         except:#If the username already exists, except is executed
             user = User.objects.create_user(username=data.get("phoneNumber"),first_name=data.get("firstName"),last_name=data.get("lastName"),password=data.get("password"))
             add_token = Token.objects.get_or_create(user_id=user.id)
